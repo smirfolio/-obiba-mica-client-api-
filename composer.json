@@ -1,0 +1,27 @@
+{
+  "name": "obiba/ObibaMicaClient",
+  "description": "Obiba Mica client Api.",
+  "keywords": [
+    "obiba",
+    "mica",
+    "studies",
+    "harmonization"
+  ],
+  "homepage": "http://obiba.org",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ben Sghaier Samir",
+      "email": "ben.sghaier.samir@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "ObibaMicaClient\\": "src/"
+    }
+  }
+}
