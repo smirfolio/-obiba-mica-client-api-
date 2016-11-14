@@ -7,38 +7,52 @@
  */
 
 namespace ObibaMicaClient;
-use ObibaMicaClient\MicaConfig as MicaConfig;
-class ObibaMica {
-  protected $studies =  "Get studies";
-  protected $study =  "Get study";
-  protected $micaUrl;
+
+class ObibaMica extends MicaRestClient{
+  protected $studies = "Get studies hihaa  ";
+  protected $study = "Get study";
   protected $config;
+  protected $micaWatchDog;
+  protected $micaRestClient;
+  protected $micaCache;
 
-  function __construct(MicaConfig\MicaConfigInterface $micaConfig) {
+  function __construct(MicaConfigInterface $micaConfig,
+                       MicaWatchDogInterface $micaWatchDog,
+                       MicaCacheInterface $micaCache
 
-$this->config =  new MicaConfig\MicaDrupalConfig();
+  ) {
+    $this->micaWatchDog = $micaWatchDog;
+    $this->config = $micaConfig;
+    $this->micaCache = $micaCache;
+    parent::__construct($micaConfig, $micaWatchDog);
+    return $this;
   }
 
-  public function obibaPost($param = NULL){
-  if(!$param){
-    return $this->studies . $this->config->micaGetConfigTest("testMyKey");
-  }
-  else{
-    return $this->study . "  ->" .$param. $this->config->micaGetConfigTest("testMyKey");
-  }
-}
-
-  public function obibaGet($param = NULL){
-    if(!$param){
-      return $this->studies;
+  public function obibaPost($param = NULL) {
+    if (!$param) {
+      return $this->studies . $this->config->micaGetConfigTest("testMyKey");
     }
-    else{
-      return $this->study . "  ->" .$param;
+    else {
+      return $this->study . "  ->" . $param . $this->config->micaGetConfigTest("testMyKey");
     }
   }
-  public function obibaPut($param = NULL){}
-  public function obibaDelete($param = NULL){}
-  public function obibaDownload($param = NULL){}
-  public function obibaUpload($param = NULL){}
+
+  public function obibaGet($resource, $acceptType, $ajax = NULL, $parameters = NULL) {
+    $this->httpGet($resource, $parameters, $acceptType);
+    return $this->send($parameters, $ajax);
+  }
+
+  public function obibaPut($param = NULL) {
+  }
+
+  public function obibaDelete($param = NULL) {
+  }
+
+  public function obibaDownload($param = NULL) {
+  }
+
+  public function obibaUpload($param = NULL) {
+  }
+
 
 }

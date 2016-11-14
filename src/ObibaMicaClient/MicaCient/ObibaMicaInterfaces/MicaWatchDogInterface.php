@@ -10,7 +10,7 @@
  */
 
 
-namespace Obiba\ObibaMicaClient\MicaWatchDog;
+namespace ObibaMicaClient;
 
 interface MicaWatchDogInterface{
 
