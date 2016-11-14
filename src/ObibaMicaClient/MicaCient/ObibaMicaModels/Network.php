@@ -12,7 +12,7 @@ namespace ObibaMicaClient;
 trait Network {
 
 
-  public Function getNetworksResources($parameters){
+  public Function getNetworksResources($parameters) {
     $language = MicaConfig::getCurrentLang();
     $from = empty($parameters['from']) ? '0' : $parameters['from'];
     $limit = empty($parameters['limit']) ? '5' : $parameters['limit'];
@@ -31,6 +31,14 @@ trait Network {
     $params .= ",locale($language)";
     return '/networks/_rql?query=' . $params;
   }
+
+  public Function getNetworkResources($idNetwork) {
+    return  $resourceQuery = '/network/' . rawurlencode($idNetwork);
+  }
+  public Function getNetworkDetailsResources($networkIds) {
+    return $resource_query = '/networks/_rql?query=' . RqlQueryBuilder::networks($networkIds);
+  }
+
   public function getNetworks($micaClient, $resourceQuery, $ajax = FALSE) {
     $data = $micaClient->obibaGet($resourceQuery, 'HEADER_JSON', $ajax);
     $resultData = json_decode($data);
@@ -40,5 +48,36 @@ trait Network {
       return $resultResourceQuery;
     }
     return FALSE;
+  }
+
+  public function getNetwork($micaClient, $resourceQuery) {
+    $data = $micaClient->obibaGet($resourceQuery, 'HEADER_JSON');
+    $network_response = json_decode($data);
+    if (!empty($network_response)) {
+      $this->updateModel($network_response);
+      return $network_response;
+    }
+
+  }
+
+  public function getNetworkDetails($micaClient, $resourceQuery) {
+    $data = $micaClient->obibaGet($resourceQuery, 'HEADER_JSON');
+    $response = json_decode($data);
+    if (!empty($response->networkResultDto) && !empty($response->networkResultDto->{'obiba.mica.NetworkResultDto.result'})) {
+      $result_resource_query = $response->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
+    }
+    if (!empty($result_resource_query)) {
+      return $result_resource_query;
+    }
+  }
+
+
+  private function updateModel($obj) {
+    if (!empty($obj->content)) {
+      $obj->model = json_decode($obj->content);
+    }
+    else {
+      $obj->model = new stdClass();
+    }
   }
 }

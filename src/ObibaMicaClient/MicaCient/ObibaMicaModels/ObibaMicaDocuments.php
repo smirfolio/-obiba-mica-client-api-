@@ -65,7 +65,7 @@ class ObibaMicaDocuments extends ObibaMica {
    * @return Object
    *   Entity document.
    */
-  public function getDocument($method, $idDocument) {
-    return $this->{$method}($this, $idDocument);
+  public function getDocument($method) {
+    return $this->{$method}($this,  $this->resourceQuery);
   }
 }
