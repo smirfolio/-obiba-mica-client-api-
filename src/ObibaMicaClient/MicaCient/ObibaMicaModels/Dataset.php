@@ -19,15 +19,13 @@ trait Dataset {
     $sort = empty($parameters['sort']) ? '' : $parameters['sort'];
     $sortRqlBucket = empty($sort) ? "" : ",sort($order$sort)";
     $query = empty($parameters['query']) ? '' : $parameters['query'];
-    $queryParameter = empty($query) ? '' : ",match($query,(Mica_dataset.name,
-    Mica_dataset.acronym,Mica_dataset.description))";
+    $queryParameter = empty($query) ? '' : ",match($query,(Mica_dataset.name,Mica_dataset.acronym,Mica_dataset.description))";
     $resource = empty($parameters['resource']) ? '' : $parameters['resource'];
     $resourceParams = empty($resource) ? '' : ",in(Mica_dataset.className,$resource)";
     $networkId = empty($parameters['network_id']) ? '' : $parameters['network_id'];
     $networkParams = empty($networkId) ? '' : ",in(Mica_dataset.networkId,$networkId)";
     $studyId = empty($parameters['study_id']) ? '' : $parameters['study_id'];
-    $studiesParam = empty($studyId) ? '' : ",study(in(Mica_study.id,(" .
-      rawurlencode($studyId) . ")))";
+    $studiesParam = empty($studyId) ? '' : ",study(in(Mica_study.id,(" . rawurlencode($studyId) . ")))";
 
     if (!empty($queryParameter) || !empty($resourceParams) || !empty($studiesParam)) {
       $params = "dataset(limit($from,$limit)$resourceParams$networkParams$queryParameter$sortRqlBucket)$studiesParam";
