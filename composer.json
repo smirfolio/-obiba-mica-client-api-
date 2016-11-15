@@ -1,5 +1,5 @@
 {
-  "name": "obiba/obibamicaclient",
+  "name": "obiba/obibaMicaClient",
   "description": "Obiba Mica client Api.",
   "keywords": [
     "obiba",
@@ -13,7 +13,8 @@
   "authors": [
     {
       "name": "Ben Sghaier Samir",
-      "email": "ben.sghaier.samir@gmail.com"
+      "email": "info@obiba.org",
+      "homepage": "http://obiba.org"
     }
   ],
   "require": {

@@ -9,13 +9,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @file
+ * MicaClient class
+ */
 
 namespace ObibaMicaClient;
 
-interface MicaConfigInterface{
+interface MicaRestClientInterface{
 
-  public function micaGetConfigTest($key);
-  public function micaGetConfig($key);
-  public function micaSetConfig($key, $value);
 
+  function httpGet($resource, $parameters = NULL, $acceptType = NULL);
+  function httpPost();
+  function httpPut();
+  function httpDelete();
+  function httpDownload();
+  function httpUpload();
 }
