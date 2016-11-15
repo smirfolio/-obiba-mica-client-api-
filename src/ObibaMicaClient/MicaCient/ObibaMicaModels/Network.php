@@ -35,12 +35,13 @@ trait Network {
   public Function getNetworkResources($idNetwork) {
     return  $resourceQuery = '/network/' . rawurlencode($idNetwork);
   }
+
   public Function getNetworkDetailsResources($networkIds) {
     return $resource_query = '/networks/_rql?query=' . RqlQueryBuilder::networks($networkIds);
   }
 
-  public function getNetworks($micaClient, $resourceQuery, $ajax = FALSE) {
-    $data = $micaClient->obibaGet($resourceQuery, 'HEADER_JSON', $ajax);
+  public function getNetworks($resourceQuery, $ajax = FALSE) {
+    $data = $this->obibaGet($resourceQuery, 'HEADER_JSON', $ajax);
     $resultData = json_decode($data);
     $resultResourceQuery = new NetworkJoinResponseWrapper($resultData);
     $hasSummary = $resultResourceQuery->hasSummaries();
@@ -50,8 +51,8 @@ trait Network {
     return FALSE;
   }
 
-  public function getNetwork($micaClient, $resourceQuery) {
-    $data = $micaClient->obibaGet($resourceQuery, 'HEADER_JSON');
+  public function getNetwork($resourceQuery) {
+    $data = $this->obibaGet($resourceQuery, 'HEADER_JSON');
     $network_response = json_decode($data);
     if (!empty($network_response)) {
       $this->updateModel($network_response);
@@ -60,8 +61,8 @@ trait Network {
 
   }
 
-  public function getNetworkDetails($micaClient, $resourceQuery) {
-    $data = $micaClient->obibaGet($resourceQuery, 'HEADER_JSON');
+  public function getNetworkDetails($resourceQuery) {
+    $data = $this->obibaGet($resourceQuery, 'HEADER_JSON');
     $response = json_decode($data);
     if (!empty($response->networkResultDto) && !empty($response->networkResultDto->{'obiba.mica.NetworkResultDto.result'})) {
       $result_resource_query = $response->networkResultDto->{'obiba.mica.NetworkResultDto.result'};

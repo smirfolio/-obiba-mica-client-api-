@@ -8,7 +8,7 @@
 
 namespace ObibaMicaClient;
 
-class ObibaMica extends MicaRestClient{
+class ObibaMica {
   protected $studies = "Get studies hihaa  ";
   protected $study = "Get study";
   protected $config;
@@ -24,7 +24,7 @@ class ObibaMica extends MicaRestClient{
     $this->micaWatchDog = $micaWatchDog;
     $this->config = $micaConfig;
     $this->micaCache = $micaCache;
-    parent::__construct($micaConfig, $micaWatchDog);
+    $this->micaRestClient = new MicaRestClient($micaConfig, $micaWatchDog);
     return $this;
   }
 
@@ -38,8 +38,8 @@ class ObibaMica extends MicaRestClient{
   }
 
   public function obibaGet($resource, $acceptType, $ajax = NULL, $parameters = NULL) {
-    $this->httpGet($resource, $parameters, $acceptType);
-    return $this->send($parameters, $ajax);
+    $this->micaRestClient->httpGet($resource, $parameters, $acceptType);
+    return $this->micaRestClient->send($parameters, $ajax);
   }
 
   public function obibaPut($param = NULL) {

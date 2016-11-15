@@ -37,14 +37,28 @@ trait Dataset {
     $params .= ",locale($language)";
     return  '/datasets/_rql?query=' . $params;
   }
-  public function getDatasets($micaClient, $resourceQuery, $ajax = FALSE) {
-    $data = $micaClient->obibaGet($resourceQuery, 'HEADER_JSON', $ajax);
+
+  public  function getDatasetResources($parameters){
+    return  (empty($parameters['resource']) ? '/dataset' :
+      '/' . $parameters['resource']) . '/' . $parameters['id'];
+  }
+
+  public function getDatasets($resourceQuery, $ajax = FALSE) {
+    $data = $this->obibaGet($resourceQuery, 'HEADER_JSON', $ajax);
     $resultData = json_decode($data);
     $resultResourceQuery = new DatasetJoinResponseWrapper($resultData);
     if (!empty($resultResourceQuery)) {
       return $resultResourceQuery;
     }
     return FALSE;
+  }
+
+  public  function getDataset($resourceQuery){
+    $data = $this->obibaGet($resourceQuery, 'HEADER_JSON');
+    $resultDataset = $data ? json_decode($data) : NULL;
+    if (!empty($resultDataset)) {
+      return $resultDataset;
+    }
   }
 
 }

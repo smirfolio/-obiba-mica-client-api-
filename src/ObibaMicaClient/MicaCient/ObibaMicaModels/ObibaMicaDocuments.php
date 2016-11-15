@@ -12,10 +12,12 @@ namespace ObibaMicaClient;
  */
 
 class ObibaMicaDocuments extends ObibaMica {
-  use Study, Network, Dataset;
+  use Study, Network, Dataset, Variable;
 
   protected $resourceQuery = NULL;
+
   function __construct() {
+
     parent::__construct(
       new MicaConfig(),
       new MicaWatchDog(),
@@ -24,11 +26,12 @@ class ObibaMicaDocuments extends ObibaMica {
     return $this;
   }
 
-  public function buildResourceQuery($method, $parameters){
+  public function buildResourceQuery($method, $parameters) {
     $resourceMethod = $method . 'Resources';
     $this->resourceQuery = $this->{$resourceMethod}($parameters);
     return $this;
   }
+
   /**
    * Get a collection of entities studies/datasets/networks/projects/variables.
    *
@@ -48,10 +51,13 @@ class ObibaMicaDocuments extends ObibaMica {
       return $cachedData;
     }
     else {
-      $collections = $this->{$method}($this, $this->resourceQuery, $ajax);
-      $this->micaCache->clientSetCache($method . '_' . $this->resourceQuery, $collections);
-      return $collections;
+      $collections = $this->{$method}($this->resourceQuery, $ajax);
+      if (!empty($collections)) {
+        $this->micaCache->clientSetCache($method . '_' . $this->resourceQuery, $collections);
+        return $collections;
+      }
     }
+    return FALSE;
   }
 
   /**
@@ -59,13 +65,23 @@ class ObibaMicaDocuments extends ObibaMica {
    *
    * @param string $method
    *   The method nome in the entity trait.
-   * @param string $idDocument
-   *   The id of the entity to retrieve.
    *
    * @return Object
    *   Entity document.
    */
   public function getDocument($method) {
-    return $this->{$method}($this,  $this->resourceQuery);
+    $cachedData = $this->micaCache->clientGetCache($method . '_' . $this->resourceQuery);
+    if (!empty($cachedData)) {
+      return $cachedData;
+    }
+    else {
+      $document = $this->{$method}($this->resourceQuery);
+      if (!empty($document)) {
+        $this->micaCache->clientSetCache($method . '_' . $this->resourceQuery,
+          $document);
+        return $document;
+      }
+      return FALSE;
+    }
   }
 }
