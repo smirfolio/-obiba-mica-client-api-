@@ -39,8 +39,12 @@ trait Dataset {
   }
 
   public  function getDatasetResources($parameters){
-    return  (empty($parameters['resource']) ? '/dataset' :
-      '/' . $parameters['resource']) . '/' . $parameters['id'];
+    $resource = '';
+    if(!empty($parameters['token_key'])){
+      $resource .= '/draft';
+    }
+    return  $resource . (empty($parameters['resource']) ? '/dataset' :
+      '/' . $parameters['resource']) . '/' . $parameters['id'] . (!empty($parameters['token_key']) ? '?key=' . $parameters['token_key'] : '');
   }
 
   public function getDatasets($resourceQuery, $ajax = FALSE) {

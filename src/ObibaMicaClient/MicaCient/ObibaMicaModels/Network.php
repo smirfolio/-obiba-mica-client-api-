@@ -78,7 +78,9 @@ trait Network {
       $obj->model = json_decode($obj->content);
     }
     else {
-      $obj->model = new stdClass();
+      #PHP Fatal error:  Class 'ObibaMicaClient\\stdClass' not found in /home/samir/projects/obiba-mica-client-api/src/ObibaMicaClient/MicaCient/ObibaMicaModels/Network.php on line 81
+      # in page dataset study detail page
+  //    $obj->model = new stdClass();
     }
   }
 }
