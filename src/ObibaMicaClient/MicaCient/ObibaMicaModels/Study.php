@@ -32,8 +32,12 @@ trait Study {
     return $resource_query;
   }
 
-  public Function getStudyResources($studyId) {
-    return  $resourceQuery = '/study/' . rawurlencode($studyId);
+  public Function getStudyResources($parameters) {
+    $resourceQuery = '/study/' . rawurlencode($parameters['id']);
+    if (!empty($parameters['token_key'])) {
+      $resourceQuery = '/draft/study/' . rawurlencode($parameters['id']) . '?key=' . $parameters['token_key'];
+    }
+    return $resourceQuery;
   }
 
   /**

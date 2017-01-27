@@ -32,8 +32,12 @@ trait Network {
     return '/networks/_rql?query=' . $params;
   }
 
-  public Function getNetworkResources($idNetwork) {
-    return  $resourceQuery = '/network/' . rawurlencode($idNetwork);
+  public Function getNetworkResources($parameters) {
+    $resourceQuery = '/network/' . rawurlencode($parameters['id']);
+    if(!empty($parameters['token_key'])){
+      $resourceQuery = '/draft/network/' . rawurlencode($parameters['id']) . '?key=' . $parameters['token_key'];
+    }
+    return  $resourceQuery;
   }
 
   public Function getNetworkDetailsResources($networkIds) {
@@ -78,9 +82,7 @@ trait Network {
       $obj->model = json_decode($obj->content);
     }
     else {
-      #PHP Fatal error:  Class 'ObibaMicaClient\\stdClass' not found in /home/samir/projects/obiba-mica-client-api/src/ObibaMicaClient/MicaCient/ObibaMicaModels/Network.php on line 81
-      # in page dataset study detail page
-  //    $obj->model = new stdClass();
+      $obj->model = new \stdClass();
     }
   }
 }

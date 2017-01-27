@@ -22,6 +22,8 @@ class DrupalMicaError {
       drupal_set_message(t($message_parameters['message'],
         $message_parameters['placeholders']),
         $message_parameters['severity']);
+      $error = $message_parameters['placeholders']['@code'] . ' ' . $message_parameters['placeholders']['@message'];
+      throw new ObibaMicaException($error,$message_parameters['severity']);
       exit;
     }
     if ((!is_null($error = error_get_last()) && $error['type'] === E_ERROR)) {
