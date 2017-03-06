@@ -18,7 +18,7 @@ trait Study {
     $limit = empty($parameters['limit']) ? '5' : $parameters['limit'];
     $order = empty($parameters['order']) ? '' : ($parameters['order'] == 'desc' ? '-' : '');
     $sort = empty($parameters['sort']) ? '' : $parameters['sort'];
-    $sortRqlBucket = empty($sort) ? "" : ",sort($order$sort)";
+    $sortRqlBucket = empty($sort) ? ",sort(name)" : ",sort($order$sort)";
     $query = empty($parameters['query']) ? '' : $parameters['query'];
     $queryParameter = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives))";
     if (empty($queryParameter)) {

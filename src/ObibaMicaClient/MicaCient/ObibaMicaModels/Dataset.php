@@ -17,7 +17,7 @@ trait Dataset {
     $limit = empty($parameters['limit']) ? '5' : $parameters['limit'];
     $order = empty($parameters['order']) ? '' : ($parameters['order'] == 'desc' ? '-' : '');
     $sort = empty($parameters['sort']) ? '' : $parameters['sort'];
-    $sortRqlBucket = empty($sort) ? "" : ",sort($order$sort)";
+    $sortRqlBucket = empty($sort) ? ",sort(name)" : ",sort($order$sort)";
     $query = empty($parameters['query']) ? '' : $parameters['query'];
     $queryParameter = empty($query) ? '' : ",match($query,(Mica_dataset.name,Mica_dataset.acronym,Mica_dataset.description))";
     $resource = empty($parameters['resource']) ? '' : $parameters['resource'];
@@ -27,7 +27,7 @@ trait Dataset {
     $studyId = empty($parameters['study_id']) ? '' : $parameters['study_id'];
     $studiesParam = empty($studyId) ? '' : ",study(in(Mica_study.id,(" . rawurlencode($studyId) . ")))";
 
-    if (!empty($queryParameter) || !empty($resourceParams) || !empty($studiesParam)) {
+    if (!empty($queryParameter) || !empty($resourceParams) || !empty($studiesParam) || !empty($networkParams) ) {
       $params = "dataset(limit($from,$limit)$resourceParams$networkParams$queryParameter$sortRqlBucket)$studiesParam";
     }
     else {
