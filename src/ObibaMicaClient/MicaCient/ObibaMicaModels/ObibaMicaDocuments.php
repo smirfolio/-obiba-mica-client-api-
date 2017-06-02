@@ -12,9 +12,11 @@ namespace ObibaMicaClient;
  */
 
 class ObibaMicaDocuments extends ObibaMica {
-  use Study, Network, Dataset, Variable;
+  use Study, Network, Dataset, Variable, File;
 
   protected $resourceQuery = NULL;
+  private static $responsePageSizeSmall = 10;
+  private static $responsePageSize = 20;
 
   function __construct() {
 
@@ -84,4 +86,53 @@ class ObibaMicaDocuments extends ObibaMica {
       return FALSE;
     }
   }
+
+  /**
+   * Download File
+   *
+   * @param string $method
+   *   The method nome in the entity trait.
+   *
+   * @return Object
+   *   Entity document.
+   */
+  public function getFile($method) {
+    $cachedData = $this->micaCache->clientGetCache($method . '_' . $this->resourceQuery);
+    if (!empty($cachedData)) {
+      return $cachedData;
+    }
+    else {
+      $file = $this->{$method}($this->resourceQuery);
+      if (!empty($file)) {
+        $this->micaCache->clientSetCache($method . '_' . $this->resourceQuery,
+          $file);
+        return $file;
+      }
+      return FALSE;
+    }
+  }
+
+  /**
+   * GEt the setting of the samll page size response (for pagination).
+   *
+   * @return int
+   *   The page size.
+   */
+  public
+  static function getResponsePageSizeSmall() {
+    return self::$responsePageSizeSmall;
+  }
+
+  /**
+   * GEt the setting of the page size response (for pagination).
+   *
+   * @return int
+   *   The page size.
+   */
+  public
+  static function getResponsePageSize() {
+    $size = empty($_GET['size']) ? self::$responsePageSize : $_GET['size'];
+    return $size;
+  }
+
 }

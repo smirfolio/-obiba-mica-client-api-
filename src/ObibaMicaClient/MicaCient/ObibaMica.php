@@ -48,7 +48,9 @@ class ObibaMica {
   public function obibaDelete($param = NULL) {
   }
 
-  public function obibaDownload($param = NULL) {
+  public function obibaDownload($resource, $acceptType, $ajax = NULL, $parameters = NULL) {
+    $this->micaRestClient->httpGet($resource, $parameters, $acceptType);
+    return $this->micaRestClient->download($parameters, $ajax);
   }
 
   public function obibaUpload($param = NULL) {
